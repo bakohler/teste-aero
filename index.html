@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aeroporto de Navegantes – Aviação</title>
+
+  <!-- CSS EMBUTIDO -->
+  <style>
+    :root {
+      --azul-principal: #0b3c5d;
+      --azul-secundario: #1d6fa5;
+      --branco: #ffffff;
+      --cinza-claro: #f2f6f9;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: var(--cinza-claro);
+      color: #222;
+    }
+
+    /* NAVBAR */
+    header {
+      background: linear-gradient(90deg, var(--azul-principal), var(--azul-secundario));
+      color: var(--branco);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    nav ul li {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    nav ul li:hover {
+      text-decoration: underline;
+    }
+
+    /* SEÇÕES */
+    section {
+      padding: 25px;
+      display: none;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+      color: var(--azul-principal);
+    }
+
+    /* IFRAMES */
+    .iframe-container {
+      width: 100%;
+      height: 600px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background: #000;
+    }
+
+    .iframe-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* TABELA CARGUEIRO */
+    .tabela-container {
+      background: var(--branco);
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: var(--azul-principal);
+      color: var(--branco);
+    }
+
+    td input {
+      width: 100%;
+      padding: 6px;
+      text-align: center;
+    }
+
+    .btn-salvar {
+      margin-top: 15px;
+      padding: 10px;
+      width: 100%;
+      background: var(--azul-secundario);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-salvar:hover {
+      opacity: 0.9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="logo">
+      <!-- COLOQUE A LOGO DO INSTAGRAM AQUI -->
+      <img src="logo.png" alt="Logo Aviação" />
+      <strong>Aeroporto de Navegantes</strong>
+    </div>
+
+    <nav>
+      <ul>
+        <li onclick="mostrarSecao('chegadas')">Chegadas</li>
+        <li onclick="mostrarSecao('saidas')">Saídas</li>
+        <li onclick="mostrarSecao('onground')">On Ground</li>
+        <li onclick="mostrarSecao('cargueiro')">Programação Cargueiro</li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- CHEGADAS -->
+  <section id="chegadas" class="active">
+    <h2>Chegadas – Aeroporto de Navegantes</h2>
+    <div class="iframe-container">
+      <iframe src="https://www.flightradar24.com/data/airports/nvt/arrivals"></iframe>
+    </div>
+  </section>
+
+  <!-- SAÍDAS -->
+  <section id="saidas">
+    <h2>Saídas – Aeroporto de Navegantes</h2>
+    <div class="iframe-container">
+      <iframe src="https://www.flightradar24.com/data/airports/nvt/departures"></iframe>
+    </div>
+  </section>
+
+  <!-- ON GROUND -->
+  <section id="onground">
+    <h2>Aeronaves no Solo – Navegantes</h2>
+    <div class="iframe-container">
+      <iframe src="https://www.flightradar24.com/data/airports/nvt/ground"></iframe>
+    </div>
+  </section>
+
+  <!-- PROGRAMAÇÃO CARGUEIRO -->
+  <section id="cargueiro">
+    <h2>Programação Cargueiro – LATAM Cargo</h2>
+
+    <div class="tabela-container">
+      <p><strong>Aeronave:</strong> Boeing 767</p>
+      <br />
+
+      <table>
+        <tr>
+          <th>Dia</th>
+          <th>Horário de Chegada</th>
+        </tr>
+        <tr>
+          <td>Quarta-feira</td>
+          <td><input id="quarta" type="text" placeholder="Ex: 22:30" /></td>
+        </tr>
+        <tr>
+          <td>Domingo</td>
+          <td><input id="domingo" type="text" placeholder="Ex: 21:50" /></td>
+        </tr>
+      </table>
+
+      <button class="btn-salvar" onclick="salvarHorarios()">Salvar Programação</button>
+    </div>
+  </section>
+
+  <footer>
+    © Aeroporto Internacional de Navegantes – Projeto Aviação
+  </footer>
+
+  <!-- JAVASCRIPT EMBUTIDO -->
+  <script>
+    function mostrarSecao(id) {
+      document.querySelectorAll('section').forEach(sec => {
+        sec.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+    }
+
+    function salvarHorarios() {
+      const quarta = document.getElementById('quarta').value;
+      const domingo = document.getElementById('domingo').value;
+
+      localStorage.setItem('horario_quarta', quarta);
+      localStorage.setItem('horario_domingo', domingo);
+
+      alert('Programação do cargueiro salva com sucesso!');
+    }
+
+    function carregarHorarios() {
+      document.getElementById('quarta').value = localStorage.getItem('horario_quarta') || '';
+      document.getElementById('domingo').value = localStorage.getItem('horario_domingo') || '';
+    }
+
+    carregarHorarios();
+  </script>
+
+</body>
+</html>
